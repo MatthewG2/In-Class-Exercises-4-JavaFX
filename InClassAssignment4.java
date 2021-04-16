@@ -1,13 +1,13 @@
 
 /**
- * File: csci1302/ch16/MileageCalculator.java
+ * File: InClassAssignment4.java
  * Package: ch16
- * @author Christopher Williams
- * Created on: Apr 12, 2017
- * Last Modified: Apr 15, 2019
- * Description:  
+ * @author Matthew Goetz
+ * Created on: Apr 16, 2021
+ * Last Modified: Apr 16, 2021
+ * Description: simple MPG or KPL with the choice by comboBox
  */
-package ch14;
+package ch16;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -17,9 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -34,42 +32,42 @@ public class InClassAssignment4 extends Application {
     private String altMileage = "Kilometers";
     private String altCapacity = "Liters";
     private String altResult = "L/100KM";
-    
+
     // create UI components split by type
     private Button btnCalc = new Button("Calculate");
     private Button btnReset = new Button("Reset");
-    
+
     private Label lblDistance = new Label(defaultMileage);
     private Label lblCapacity = new Label(defaultCapacity);
     private Label lblResult = new Label(defaultResult);
     private Label lblEffType = new Label("Efficiency Type");
-    
+
     private TextField tfDistance = new TextField(defaultEntry);
     private TextField tfCapacity = new TextField(defaultEntry);
     private TextField tfResult = new TextField(defaultCalc);
-    
+
     //create list with already created strings
     ObservableList<String> results = FXCollections.observableArrayList(defaultResult,altResult);
-    
+
     //populate the combobox
 	ComboBox<String> cmbresults =	new ComboBox<>(results);
 
-	    
+
     private GridPane mainPane = new GridPane();
-    
+
     public void start(Stage primaryStage) {   	
-    	
+
         // set preferences for UI components
         tfDistance.setMaxWidth(txtWidth);
         tfCapacity.setMaxWidth(txtWidth);
         tfResult.setMaxWidth(txtWidth);
         tfResult.setEditable(false);
-        
+
         // create a main grid pane to hold items
         mainPane.setPadding(new Insets(10.0));
         mainPane.setHgap(txtWidth/2.0);
         mainPane.setVgap(txtWidth/12.0);
-        
+
         // add items to mainPane
         mainPane.add(lblEffType, 0, 0);
         mainPane.add(cmbresults, 0, 1);
@@ -81,7 +79,7 @@ public class InClassAssignment4 extends Application {
         mainPane.add(tfResult, 1, 4);
         mainPane.add(btnReset, 0, 5);
         mainPane.add(btnCalc, 1, 5);
-        
+
         // register action handlers
         btnCalc.setOnAction(e -> calcMileage());
         tfDistance.setOnAction(e -> calcMileage());
@@ -89,35 +87,35 @@ public class InClassAssignment4 extends Application {
         tfResult.setOnAction(e -> calcMileage());
         cmbresults.setOnAction(e -> changeLabels());
         btnReset.setOnAction(e -> resetForm());
-        
+
     	cmbresults.setPromptText(defaultResult);
 
-       
+
 
         // create a scene and place it in the stage
         Scene scene = new Scene(mainPane); 
-        
+
         // set and show stage
         primaryStage.setTitle("Mileage Calculator"); 
         primaryStage.setScene(scene); 
         primaryStage.show();      
-        
+
         // stick default focus in first field for usability
         tfDistance.requestFocus();
     }
-    
+
     /**
      * Convert existing figures and recalculate
      * This needs to be separate to avoid converting when
      * the conversion is not necessary
      */
     private void changeLabels() {
-    	
+
     	//Make the default MPG
     	if(cmbresults.getValue() == null) {
     		cmbresults.getValue().equals(defaultResult);
     	}
-    	
+
     	// distinguish between L/100KM and MPG
     	if (cmbresults.getValue().equals(altResult) && lblCapacity.getText().equals(defaultCapacity)) {
         	// update labels
@@ -131,20 +129,20 @@ public class InClassAssignment4 extends Application {
         	lblResult.setText(defaultResult);
         }
     }
-    
+
     /**
      * Calculate expenses based on entered figures
      */
     private void calcMileage() {   
-    	
+
     	//Make the default MPG
     	if(cmbresults.getValue() == null) {
     		cmbresults.setValue(defaultResult);
     	}
-    	
+
     	// set default values
         double distance = 0.0, capacity = 0.0;
-        
+
         // make sure to get numeric values only
         if (tfCapacity.getText() != null && !tfCapacity.getText().isEmpty()
         		&& tfDistance.getText() != null && !tfDistance.getText().isEmpty()) {
@@ -161,11 +159,11 @@ public class InClassAssignment4 extends Application {
         	// MPG
         	result = (capacity != 0) ? distance/capacity : 0;       	
         }
-    
+
 	    // update calculation fields with currency formatting
         tfResult.setText(String.format("%.2f", result));
     }
-    
+
     /**
      * Reset all values in the application
      */
@@ -179,11 +177,10 @@ public class InClassAssignment4 extends Application {
     	lblDistance.setText(defaultMileage);
     	lblResult.setText(defaultResult);
     }
-	
-	
+
+
 	public static void main(String[] args) {
 		launch(args);
 	}
 
 }
-
